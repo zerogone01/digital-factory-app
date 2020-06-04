@@ -1,22 +1,18 @@
 package cl.freedom.digitalfactoryapp.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cl.freedom.digitalfactoryapp.R
-import cl.freedom.digitalfactoryapp.retrofit.AppClient
+import cl.freedom.digitalfactoryapp.data.IndicatorViewModel
 import cl.freedom.digitalfactoryapp.retrofit.response.Indicator
-import cl.freedom.digitalfactoryapp.retrofit.response.ResponseIndicatorsResume
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class IndicatorListFragment
 /**
@@ -28,11 +24,14 @@ class IndicatorListFragment
     private var adapter: MyIndicatorRecyclerViewAdapter? = null
     // TODO: Customize parameters
     private var mColumnCount = 1
+    private var indicatorViewModel: IndicatorViewModel? = null
+    private var indicatorList: MutableList<Indicator?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = MyIndicatorRecyclerViewAdapter(activity)
-        initializeIndicators()
+        indicatorViewModel = ViewModelProvider(this).get(IndicatorViewModel::class.java)
+
         if (arguments != null) {
             mColumnCount = arguments!!.getInt(ARG_COLUMN_COUNT)
         }
@@ -47,28 +46,6 @@ class IndicatorListFragment
         adapter!!.notifyDataSetChanged()
     }
 
-    fun initializeIndicators() {
-        val appClient: AppClient? = AppClient.instance
-        val appService = appClient?.appService
-        val call = appService?.allIndicatorResume
-        call!!.enqueue(object : Callback<ResponseIndicatorsResume?> {
-            override fun onResponse(call: Call<ResponseIndicatorsResume?>, response: Response<ResponseIndicatorsResume?>) {
-                if (response.isSuccessful) {
-                    val responseIndicator = response.body()
-                    for (indicator in responseIndicator!!.indicators) {
-                        Log.d("Indicadores", indicator!!.nombre)
-                    }
-                    updateAdapter(responseIndicator!!.indicators)
-                } else {
-                    Toast.makeText(activity, "Algo ha ido mal " + response.code(), Toast.LENGTH_LONG).show()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseIndicatorsResume?>, t: Throwable) {
-                Toast.makeText(activity, "Algo ha ido mal 2", Toast.LENGTH_LONG).show()
-            }
-        })
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -83,8 +60,21 @@ class IndicatorListFragment
                 recyclerView!!.layoutManager = GridLayoutManager(context, mColumnCount)
             }
             recyclerView!!.adapter = adapter
+            loadIndicatorData()
         }
         return view
+    }
+
+    private fun loadIndicatorData() {
+ //       userViewModel!!.getUser(email)!!.observe(this, Observer<User?> { user: User? ->
+        indicatorViewModel!!.indicators!!.observe(viewLifecycleOwner, Observer<MutableList<Indicator?>?> {
+            indicators : MutableList<Indicator?>? ->
+            if(indicators != null)
+            {
+                indicatorList = indicators
+                updateAdapter(indicatorList!!)
+            }
+        })
     }
 
     companion object {

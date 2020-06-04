@@ -30,11 +30,13 @@ class MyIndicatorRecyclerViewAdapter(private val ctx: Context?) : RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvIndicator.text = mValues!!.get(position)!!.nombre
-        holder.tvValue.text = mValues!!.get(position)!!.valor.toString()
-        holder.mView.setOnClickListener { v ->
-            mListener = holder
-            (mListener as ViewHolder).onItemClick(v, position)
+        if(mValues != null) {
+            holder.tvIndicator.text = mValues!!.get(position)!!.nombre
+            holder.tvValue.text = mValues!!.get(position)!!.valor.toString()
+            holder.mView.setOnClickListener { v ->
+                mListener = holder
+                (mListener as ViewHolder).onItemClick(v, position)
+            }
         }
     }
 
