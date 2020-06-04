@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout_content_list"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginEnd="0dp"
+    android:background="@android:color/background_light"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/text_valor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="$27.000"
+        android:textAlignment="viewStart"
+        android:textColor="@color/colorVerde"
+        android:textColorLink="@color/colorVerde"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_nombre_" />
+
+    <TextView
+        android:id="@+id/text_nombre_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="UF"
+        android:textAlignment="viewStart"
+        android:textColor="@color/colorVerde"
+        android:textColorLink="@color/colorVerde"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
