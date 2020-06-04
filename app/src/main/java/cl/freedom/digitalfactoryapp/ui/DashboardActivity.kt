@@ -16,7 +16,7 @@ class DashboardActivity : AppCompatActivity() {
     //aplicar dagger
     //aplicar pruebas unitarias con mockito y roboelectric (covertura 80%)
     private var mIndicatorListFragment: IndicatorListFragment? = null
-
+    private var profileName = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -24,6 +24,7 @@ class DashboardActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_dashboard, mIndicatorListFragment!!)
         transaction.commit()
+        profileName = intent.getStringExtra("Username")
         val btnCloseSession = findViewById<Button>(R.id.button_close_session)
         btnCloseSession.setOnClickListener {
             Toast.makeText(this@DashboardActivity, "Cerrando sesión", Toast.LENGTH_SHORT).show()
@@ -38,6 +39,7 @@ class DashboardActivity : AppCompatActivity() {
         inflater.inflate(R.menu.menu_edit, menu)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
+        setTitle("Hola "+ profileName)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false

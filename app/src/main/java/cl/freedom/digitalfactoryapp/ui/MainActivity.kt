@@ -36,15 +36,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun addUser() {
-        Log.d("Entre", "wena")
         val prefs = PreferenceManager.getDefaultSharedPreferences(baseContext)
         val previouslyStarted = prefs.getBoolean("firstTime", false)
         if (!previouslyStarted) {
-            Log.d("Entre", "wena2")
             val edit = prefs.edit()
-            edit.putBoolean("firstTime", Boolean.TRUE)
             edit.commit()
-            Log.d("Entre", "insercion")
             val encryptedString = AES.encrypt(GlobalData.user.password, secretKey)
             val user = User(GlobalData.user.email, encryptedString)
             userViewModel!!.insert(user)
@@ -86,6 +82,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     if (decryptedString == password) {
                         Toast.makeText(this@MainActivity, "Sesión iniciada correctamente", Toast.LENGTH_SHORT).show()
                         val i = Intent(this@MainActivity, DashboardActivity::class.java)
+                        i.putExtra("Username",user.email)
                         startActivity(i)
                         finish()
                     } else {
